@@ -10,13 +10,14 @@ import {
 import {Button, Text} from 'react-native-ui-kitten';
 import {SignInForm1, SocialAuth} from '../../components/auth';
 import {ScrollableAvoidKeyboard, textStyle} from '../../components/common';
+import {EmailValidator, PasswordValidator} from '../../core/validators';
 
 const imageSignIn1Bg = require('../../assets/images/image-background-sign-in-1.jpg');
 
 class SignIn1Component extends React.Component {
   state = {
     email: undefined,
-    password: undefined,
+    password: '',
   };
 
   onEmailInputTextChange = email => {
@@ -30,7 +31,10 @@ class SignIn1Component extends React.Component {
   backgroundImage = imageSignIn1Bg;
 
   onSignInButtonPress = () => {
-    this.props.onSignInPress(this.state.formData);
+    this.props.onSignInPress({
+      email: this.state.email,
+      password: this.state.password,
+    });
   };
 
   onSignUpButtonPress = () => {
@@ -71,6 +75,14 @@ class SignIn1Component extends React.Component {
     );
   };
 
+  validator() {
+    return (
+      this.state.email &&
+      EmailValidator(this.state.email) &&
+      this.state.password != ''
+    );
+  }
+
   render() {
     const {themedStyle} = this.props;
 
@@ -104,6 +116,11 @@ class SignIn1Component extends React.Component {
               Sign Up
             </Button>
           </View>
+          {this.props.errorMsg && (
+            <View>
+              <Text style={{color: 'red'}}>{this.props.errorMsg}</Text>
+            </View>
+          )}
           <SignInForm1
             style={themedStyle.formContainer}
             onEmailInputTextChange={this.onEmailInputTextChange}
@@ -114,8 +131,9 @@ class SignIn1Component extends React.Component {
           <Button
             size="large"
             textStyle={textStyle.button}
-            style={themedStyle.button}
+            style={!this.validator() ? themedStyle.disabledButton : themedStyle.button}
             status="info"
+            disabled={!this.validator()}
             onPress={this.onSignInButtonPress}>
             SIGN IN
           </Button>
@@ -153,7 +171,7 @@ export const SignIn1 = withStyles(SignIn1Component, theme => ({
     paddingHorizontal: 0,
   },
   ewaButtonText: {
-    color: 'white'
+    color: 'white',
   },
   ewaButtonIcon: {
     marginHorizontal: 0,
@@ -186,4 +204,6 @@ export const SignIn1 = withStyles(SignIn1Component, theme => ({
     color: 'white',
   },
   button: {backgroundColor: 'white', borderColor: 'white'},
+  disabledButton: {backgroundColor: 'grey', borderColor: 'grey'},
+
 }));

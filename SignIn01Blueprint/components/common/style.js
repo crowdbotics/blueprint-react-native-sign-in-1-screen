@@ -9,6 +9,7 @@ export const textStyle = {
   },
   paragraph: {
     fontWeight: 'normal',
+    color: 'white'
   },
   caption1: {
     fontWeight: 'normal',

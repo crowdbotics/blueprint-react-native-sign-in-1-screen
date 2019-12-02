@@ -1,8 +1,10 @@
 import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
 import {SignIn1} from './signIn1.component';
+import {connect} from 'react-redux';
+import * as emailAuthActions from '../../redux/actions';
 
-export class SignIn1Container extends React.Component {
+class _SignIn1Container extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -10,7 +12,8 @@ export class SignIn1Container extends React.Component {
   navigationKey = 'SignIn1Container';
 
   onSignInPress = data => {
-    this.props.navigation.goBack();
+    // this.props.navigation.goBack();
+
   };
 
   onSignUpPress = () => {
@@ -31,13 +34,27 @@ export class SignIn1Container extends React.Component {
   render() {
     return (
       <SignIn1
-        onSignInPress={this.onSignInPress}
+        onSignInPress={this.props.login}
         onSignUpPress={this.onSignUpPress}
         onGooglePress={this.onGooglePress}
         onFacebookPress={this.onFacebookPress}
         onTwitterPress={this.onTwitterPress}
         onEwaPress={this.onEwaPress}
+        errorMsg={this.props.signInErrors}
       />
     );
   }
 }
+
+const mapStateToProps = state => ({
+  signInErrors: state.SignIn01Blueprint.errors.SignIn,
+});
+
+const mapDispatchToProps = {
+  login: emailAuthActions.login
+}
+
+export const SignIn1Container =  connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(_SignIn1Container);

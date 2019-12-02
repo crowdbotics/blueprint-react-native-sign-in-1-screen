@@ -17,6 +17,7 @@ class SignInForm1Component extends React.Component {
   };
 
   getStatus = (valid) => {
+      
       return valid ? 'success' : 'danger';
   }
 
@@ -42,7 +43,7 @@ class SignInForm1Component extends React.Component {
           label="EMAIL"
           placeholder="Email"
           autoCapitalize="none"
-          //status={this.getStatus(EmailValidator(email))}
+          status={email && this.getStatus(EmailValidator(email))}
           value={email}
           onChangeText={onEmailInputTextChange}
         />
@@ -53,7 +54,7 @@ class SignInForm1Component extends React.Component {
           secureTextEntry={true}
           placeholder="Password"
           label="PASSWORD"
-          //status={this.getStatus(PasswordValidator(password))}
+          //status={password && this.getStatus(PasswordValidator(password))}
           value={password}
           onChangeText={onPasswordInputTextChange}
         />
