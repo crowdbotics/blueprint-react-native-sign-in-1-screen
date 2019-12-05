@@ -9,7 +9,7 @@ const initialState = {
 export const SignIn01BlueprintReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.EMAIL_AUTH_LOGIN_SUCCESS:
-      return { ...state, accessToken: action.accessToken };
+      return { ...state, accessToken: action.accessToken, errors: { SignIn: 'Login success' } };
     case actions.EMAIL_AUTH_LOGIN_ERROR:
       return { ...state, errors: { SignIn: action.error } };
     case actions.EMAIL_AUTH_PASSWORD_RECOVER_ERROR:

@@ -16,7 +16,7 @@ import {request} from '../../../utils/http';
 
 function sendLogin({email, password}) {
   return request.post('/api/v1/login/', {
-    email,
+    username: email,
     password,
   });
 }
@@ -29,8 +29,8 @@ function sendSignUp({email, password}) {
 }
 
 function sendPasswordRecovery(email) {
-  //there is no endpoint for this in backend
-  return request.post('/rest-auth/password/reset/', {
+  //There is no reset password endpoint in backend, it's just a fake url
+  return request.post('/api/v1/password-reset/', {
     email,
   });
 }
@@ -40,17 +40,16 @@ function* handleLogin(action) {
     user: {email, password},
   } = action;
   try {
-
     const {status, data} = yield call(sendLogin, {email, password});
 
     if (status === 200) {
       yield put({
         type: EMAIL_AUTH_LOGIN_SUCCESS,
-        accessToken: data.key,
+        accessToken: data.token,
       });
 
       // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('ProtectedRoute');
+      //NavigationService.navigate('ProtectedRoute');
     } else {
       yield put({
         type: EMAIL_AUTH_LOGIN_ERROR,
@@ -59,7 +58,6 @@ function* handleLogin(action) {
     }
   } catch (error) {
     // todo add errors with similar structure in backend
-    console.log(error.response)
     yield put({
       type: EMAIL_AUTH_LOGIN_ERROR,
       error: "Can't sign in with provided credentials",
@@ -81,7 +79,7 @@ function* handleSignUp(action) {
       });
 
       // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('ConfirmationRequired');
+      //NavigationService.navigate('ConfirmationRequired');
     } else {
       yield put({
         type: EMAIL_AUTH_SIGNUP_ERROR,
